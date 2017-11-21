@@ -67,6 +67,28 @@ void h5_Draw()
 	h5->Draw("same");
 }
 
+void hist_fill_Xy(TH1F &histogram, char name[])
+{
+	FILE *f = fopen(name,"r");
+	Double_t x, y;
+	while (!feof(f))
+	{ 
+		fscanf(f,"%lf %lf\n", &x, &y);
+		histogram.Fill(x);
+	}
+}
+
+void hist_fill_xY(TH1F &histogram, char name[])
+{
+	FILE *f = fopen(name,"r");
+	Double_t x, y;
+	while (!feof(f))
+	{ 
+		fscanf(f,"%lf %lf\n", &x, &y);
+		histogram.Fill(y);
+	}
+}
+
 void hist_fill(TH1F &histogram, char name[])
 {
 	FILE *f = fopen(name,"r");
@@ -525,6 +547,24 @@ void graph_3d(char name1[], char name2[])
 	c2->Modified();
 	
 	
+}
+
+void hist_Xy(char name[], int n_bins=200, double fit_interval_left=0, double fit_interval_right=1E-6)
+{
+	canvas();
+	h1 = new TH1F("h1f","hist", n_bins, fit_interval_left, fit_interval_right);
+	hist_fill_Xy(*h1, name);
+	h1_Draw();
+	c1->Update();
+}
+
+void hist_xY(char name[], int n_bins=200, double fit_interval_left=0, double fit_interval_right=1E-6)
+{
+	canvas();
+	h1 = new TH1F("h1f","hist", n_bins, fit_interval_left, fit_interval_right);
+	hist_fill_xY(*h1, name);
+	h1_Draw();
+	c1->Update();
 }
 
 
